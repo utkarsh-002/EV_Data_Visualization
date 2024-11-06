@@ -19,16 +19,6 @@ router.get("/", async (req, res) => {
   try {
     const { year, month, vehicleCategory, vehicleType } = req.body;
 
-//    const query = `
-//   SELECT State, \`Vehicle Category\`, SUM(Total) AS Total, SUM(\`ELECTRIC(BOV)\`) AS Electric
-//   FROM ev_data
-//   WHERE \`Year\` = :year
-//     AND \`Month_name\` = :month
-//     AND \`Vehicle Category\` = :vehicleCategory
-//     AND \`Vehicle Type\` = :vehicleType
-//   GROUP BY State, \`Vehicle Category\`
-// `;
-
     let query = `
       SELECT State, \`Vehicle Category\`, SUM(Total) AS Total, SUM(\`ELECTRIC(BOV)\`) AS Electric
       FROM ev_data

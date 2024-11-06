@@ -1,8 +1,18 @@
 const express = require('express');
 const app = express();
 const db = require('./models');
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const salesQuery = require('./routes/statewiseQueries');
+const procedure = require('./createProcedure');
+
+app.use("/createProcedure", procedure);
 app.use("/swQuery", salesQuery);
 
 db.sequelize.sync().then(() => {
