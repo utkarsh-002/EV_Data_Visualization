@@ -10,10 +10,12 @@ app.use(
 );
 
 const salesQuery = require('./routes/statewiseQueries');
-const procedure = require('./createProcedure');
+const evTimeSeries = require('./routes/EVTimeSeries');
+const procedure = require('./routes/createStatewiseProcedure');
 
-app.use("/createProcedure", procedure);
+app.use("/statewiseSales", procedure);
 app.use("/swQuery", salesQuery);
+app.use("/evTimeSeries", evTimeSeries);
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {

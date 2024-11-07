@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Sequelize } = require("sequelize");
-const config = require("./config/config.json").development;
+const config = require("../config/config.json").development;
 
 // Set up Sequelize connection
 const sequelize = new Sequelize(
@@ -20,7 +20,7 @@ const sequelize = new Sequelize(
 router.get("/", async (req, res) => {
   try {
     // SQL statement to create the stored procedure
-    const createProcedureSQL = `
+    const createStatewiseProcedureSQL = `
       DROP PROCEDURE IF EXISTS CreateEvStatewiseTable;
       CREATE PROCEDURE CreateEvStatewiseTable()
       BEGIN
@@ -33,13 +33,13 @@ router.get("/", async (req, res) => {
         INSERT INTO ev_statewise (State, \`Vehicle Category\`, Total, Electric)
         SELECT State, \`Vehicle Category\`, SUM(Total) AS Total, SUM(\`ELECTRIC(BOV)\`) AS Electric
         FROM ev_data
-        WHERE \`Year\` BETWEEN 2013 AND 2024
+        WHERE \`Year\` BETWEEN 2014 AND 2024
         GROUP BY State, \`Vehicle Category\`;
       END;
     `;
 
     // Execute the SQL statement
-    await sequelize.query(createProcedureSQL, {
+    await sequelize.query(createStatewiseProcedureSQL, {
       type: Sequelize.QueryTypes.RAW,
     });
 
