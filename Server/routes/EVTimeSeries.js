@@ -30,10 +30,12 @@ router.get("/", async (req, res) => {
           Year INT,
           \`Vehicle Category\` VARCHAR(255),
           Electric INT,
-          Total INT
+          Total INT,
+          Ratio DECIMAL(5, 4)
         );
-        INSERT INTO ev_timeSeries (State, Year, \`Vehicle Category\`, Electric, Total)
-        SELECT State, Year, \`Vehicle Category\`, SUM(\`ELECTRIC(BOV)\`) AS Electric, SUM(\`Total\`) AS Total
+        INSERT INTO ev_timeSeries (State, Year, \`Vehicle Category\`, Electric, Total, Ratio)
+        SELECT State, Year, \`Vehicle Category\`, SUM(\`ELECTRIC(BOV)\`) AS Electric, SUM(\`Total\`) AS Total,
+        (SUM(\`ELECTRIC(BOV)\`) / SUM(\`Total\`)) AS Ratio
         FROM ev_data
         WHERE \`Year\` BETWEEN 2014 AND 2024
         GROUP BY State, \`Vehicle Category\`, Year;
@@ -131,6 +133,20 @@ router.get("/", async (req, res) => {
             type: Sequelize.QueryTypes.SELECT,
             }
         );
+        res.json(results);
+        return;
+    } else if(query.query === "timeSeries") {
+        await sequelize.query(createTimeSeriesProcedure, {
+            type: Sequelize.QueryTypes.RAW,
+        });
+    
+        await sequelize.query("CALL createTimeSeriesProcedure", {
+            type: Sequelize.QueryTypes.RAW,
+        });
+    
+        const results = await sequelize.query("SELECT * FROM ev_timeSeries", {
+            type: Sequelize.QueryTypes.SELECT,
+        });
         res.json(results);
         return;
     }
