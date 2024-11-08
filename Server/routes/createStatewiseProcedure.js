@@ -28,11 +28,13 @@ router.get("/", async (req, res) => {
         CREATE TABLE IF NOT EXISTS ev_statewise (
           State VARCHAR(255),
           \`Vehicle Category\` VARCHAR(255),
+          Electric INT,
           Total INT,
-          Electric INT
+          Ratio DECIMAL(10, 4)
         );
-        INSERT INTO ev_statewise (State, \`Vehicle Category\`, Total, Electric)
-        SELECT State, \`Vehicle Category\`, SUM(Total) AS Total, SUM(\`ELECTRIC(BOV)\`) AS Electric
+        INSERT INTO ev_statewise (State, \`Vehicle Category\`, Electric, Total, Ratio)
+        SELECT State, \`Vehicle Category\`, SUM(\`ELECTRIC(BOV)\`) AS Electric, SUM(Total) AS Total,
+        CAST(SUM(\`ELECTRIC(BOV)\`) / SUM(Total) AS DECIMAL(10, 4)) AS Ratio
         FROM ev_data
         WHERE \`Year\` BETWEEN 2014 AND 2024
         GROUP BY State, \`Vehicle Category\`;
