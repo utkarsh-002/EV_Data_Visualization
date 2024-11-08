@@ -44,6 +44,7 @@ router.get("/", async (req, res) => {
         DROP PROCEDURE IF EXISTS pivotProcedure;
         CREATE PROCEDURE pivotProcedure()
         BEGIN
+        DROP TABLE IF EXISTS ev_timeSeries_pivot;
           CREATE TABLE IF NOT EXISTS ev_timeSeries_pivot (
             State VARCHAR(255),
             \`2014\` INT,

@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
       DROP PROCEDURE IF EXISTS CreateEvStatewiseTable;
       CREATE PROCEDURE CreateEvStatewiseTable()
       BEGIN
+        DROP TABLE IF EXISTS ev_statewise;
         CREATE TABLE IF NOT EXISTS ev_statewise (
           State VARCHAR(255),
           \`Vehicle Category\` VARCHAR(255),
