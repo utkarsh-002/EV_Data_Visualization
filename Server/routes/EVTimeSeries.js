@@ -151,20 +151,6 @@ router.get("/", async (req, res) => {
         return;
     }
 
-    // Execute the SQL statement
-    await sequelize.query(createTimeSeriesProcedure, {
-      type: Sequelize.QueryTypes.RAW,
-    });
-
-    await sequelize.query("CALL createTimeSeriesProcedure", {
-      type: Sequelize.QueryTypes.RAW,
-    });
-
-    const results = await sequelize.query("SELECT * FROM ev_timeSeries", {
-      type: Sequelize.QueryTypes.SELECT,
-    });
-    // console.log(results);
-    res.json(results);
   } catch (error) {
     console.error("Error executing query:", error);
     res.status(500).send("Internal Server Error");
